@@ -4,14 +4,12 @@ import { UpdateComputadorDto } from './dto/update-computador.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Computador } from './schemas/computador.schema';
 import { Model } from 'mongoose';
-import { PerifericosService } from 'src/perifericos/perifericos.service';
-import { CreatePerifericoDto } from 'src/perifericos/dto/create-periferico.dto';
+
 
 @Injectable()
 export class ComputadoresService {
   constructor(
     @InjectModel(Computador.name) private computadorModel: Model<Computador>,
-    private perifericosService: PerifericosService,
   ) {}
 
   async create(createComputadorDto: CreateComputadorDto) {
@@ -59,41 +57,5 @@ export class ComputadoresService {
 
     await this.computadorModel.findByIdAndDelete(id).exec();
     return { message: 'Computador removido com sucesso' };
-  }
-
-  async addPeriferico(
-    computadorId: string,
-    createPerifericoDto: CreatePerifericoDto,
-  ) {
-    const computador = await this.computadorModel.findById(computadorId).exec();
-    if (!computador) {
-      return { message: 'Computador não encontrado' };
-    }
-
-    const periferico =
-      await this.perifericosService.create(createPerifericoDto);
-    computador.perifericos.push(periferico.id);
-    await computador.save();
-
-    return computador.populate('perifericos');
-  }
-
-  async removePeriferico(computadorId: string, perifericoId: string) {
-    const computador = await this.computadorModel.findById(computadorId).exec();
-    if (!computador) {
-      return { message: 'Computador não encontrado' };
-    }
-
-    await this.perifericosService.remove(perifericoId);
-
-    const newComputer = await this.computadorModel.findByIdAndUpdate(
-      computadorId,
-      {
-        $pull: { perifericos: perifericoId },
-      },
-      { new: true },
-    );
-
-    return newComputer.populate('perifericos');
   }
 }

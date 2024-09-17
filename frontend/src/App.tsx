@@ -1,24 +1,18 @@
 import React from 'react';
-import './App.css';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import ComputerList from './components/ComputerList';
+import ComputerForm from './components/ComputerForm';
 
-function App() {
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<ComputerList />} />
+        <Route path="/create" element={<ComputerForm />} />
+        <Route path="/edit/:id" element={<ComputerForm />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;

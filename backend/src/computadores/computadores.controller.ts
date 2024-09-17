@@ -10,7 +10,6 @@ import {
 import { ComputadoresService } from './computadores.service';
 import { CreateComputadorDto } from './dto/create-computador.dto';
 import { UpdateComputadorDto } from './dto/update-computador.dto';
-import { CreatePerifericoDto } from 'src/perifericos/dto/create-periferico.dto';
 
 @Controller('computadores')
 export class ComputadoresController {
@@ -44,19 +43,4 @@ export class ComputadoresController {
     return this.computadoresService.remove(id);
   }
 
-  @Post(':id/perifericos')
-  addPeriferico(
-    @Param('id') id: string,
-    @Body() createPerifericoDto: CreatePerifericoDto,
-  ) {
-    return this.computadoresService.addPeriferico(id, createPerifericoDto);
-  }
-
-  @Delete(':id/perifericos/:perifericoId')
-  removePeriferico(
-    @Param('id') id: string,
-    @Param('perifericoId') perifericoId: string,
-  ) {
-    return this.computadoresService.removePeriferico(id, perifericoId);
-  }
 }

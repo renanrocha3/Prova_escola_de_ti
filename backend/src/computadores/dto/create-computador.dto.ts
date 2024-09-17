@@ -11,4 +11,6 @@ export class CreateComputadorDto {
 
   @IsInt()
   dataFabricacao: number;
+
+  perifericos: string[]
 }
